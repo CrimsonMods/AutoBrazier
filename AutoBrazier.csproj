@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>AutoBrazier</AssemblyName>
+    <Description>Created with VRising.ModTemplate, you should edit this.</Description>
+    <Version>0.1.7</Version>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>AutoBrazier</RootNamespace>
+    <AssemblyVersion>0.1.7.0</AssemblyVersion>
+    <FileVersion>0.1.7.0</FileVersion>
+    <InformationalVersion>0.1.7+1.Branch.main.Sha.a322c9fb3b6e06343e3dfa71f39a27988d15f262</InformationalVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.668" IncludeAssets="compile" />
+    <PackageReference Include="BepInEx.Core" Version="6.0.0-be.668" IncludeAssets="compile" />
+    <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+    <PackageReference Include="VRising.Unhollowed.Client" Version="1.0.2.794360001" />
+    <PackageReference Include="VRising.Bloodstone" Version="0.2.1" />
+  </ItemGroup>
+</Project>
