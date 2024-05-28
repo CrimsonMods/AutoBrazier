@@ -3,6 +3,7 @@
 ## Install (Manual)
 - Install BepInEx
 - Install Bloodstone
+- Install BloodyCore
 - Extract AutoBrazier.dll into (VRising server folder)/BepInEx/plugins (or BepInEx/BloodstonePlugins)
 - [ServerLaunchFix](https://v-rising.thunderstore.io/package/Mythic/ServerLaunchFix/) recommended for in-game hosted games
 
@@ -22,6 +23,16 @@
 autoToggleEnabled = true
 ```
 
-# Changelog
-0.1.0 - 5/18/24 : 
-- Updated [QuickBrazier](https://github.com/harminded/QuickBrazier) by harminded to work with V Rising 1.0
+## Support
+
+Want to support my V Rising Mod development? 
+
+Join [Vexor World]() where I create exclusive content mods
+
+Donations Accepted with [Ko-Fi](https://ko-fi.com/skytech6)
+
+Or buy/play my games! 
+
+[Train Your Minibot](https://store.steampowered.com/app/713740/Train_Your_Minibot/) 
+
+[Boring Movies](https://store.steampowered.com/app/1792500/Boring_Movies/)
