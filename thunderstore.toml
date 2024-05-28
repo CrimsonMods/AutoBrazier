@@ -1,0 +1,31 @@
+[config]
+schemaVersion = "0.0.1"
+
+[package]
+namespace = "skytech6"
+name = "AutoBrazier"
+versionNumber = "0.1.0"
+description = "Automatically turn braziers on/off with day/night cycle"
+websiteUrl = "https://github.com/SkyTech6/AutoBrazier"
+containsNsfwContent = false
+
+[package.dependencies]
+BepInEx-BepInExPack_V_Rising = "1.691.3"
+deca-Bloodstone = "0.2.2"
+Trodi-BloodyCore = "1.2.2"
+
+
+[build]
+icon = "./images/logo_256.png"
+readme = "./README.md"
+outdir = "./build"
+
+[[build.copy]]
+source = "./dist"
+target = ""
+
+[publish]
+communities = ["v-rising"]
+repository = "https://thunderstore.io"
+[publish.categories]
+v-rising = ["gloomrot-update", "mods", "server"]

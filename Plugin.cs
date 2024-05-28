@@ -5,9 +5,10 @@ using BepInEx.Unity.IL2CPP;
 using Bloodstone.API;
 using HarmonyLib;
 using System;
-using System.Collections.Generic;
-using ProjectM.Scripting;
 using ProjectM;
+using Bloody.Core;
+using Bloody.Core.API.v1;
+using Unity.Entities;
 
 namespace AutoBrazier;
 
@@ -54,6 +55,8 @@ public class Plugin : BasePlugin
 
     public override bool Unload()
     {
+        EventsHandlerSystem.OnInitialize -= GameDataOnInitialize;
+
         Config.Clear();
         _harmony?.UnpatchSelf();
         return true;

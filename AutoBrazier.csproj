@@ -2,7 +2,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>AutoBrazier</AssemblyName>
-    <Description>Created with VRising.ModTemplate, you should edit this.</Description>
+    <Description>Automatically turns braziers on/off with day/night cycle</Description>
     <Version>0.1.7</Version>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
@@ -15,7 +15,12 @@
     <PackageReference Include="BepInEx.Unity.IL2CPP" Version="6.0.0-be.668" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.Core" Version="6.0.0-be.668" IncludeAssets="compile" />
     <PackageReference Include="BepInEx.PluginInfoProps" Version="2.*" />
+    <PackageReference Include="Bloody.Core" Version="1.2.2" />
     <PackageReference Include="VRising.Unhollowed.Client" Version="1.0.2.794360001" />
     <PackageReference Include="VRising.Bloodstone" Version="0.2.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".github\build.yml" />
+    <None Include=".github\release.yml" />
   </ItemGroup>
 </Project>

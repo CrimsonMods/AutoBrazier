@@ -3,6 +3,8 @@ using BepInEx.Logging;
 using ProjectM;
 using ProjectM.Scripting;
 using Unity.Entities;
+using AutoBrazier.Server;
+using Bloody.Core.API.v1;
 
 namespace AutoBrazier;
 
@@ -35,6 +37,9 @@ internal static class Core
         PrefabCollectionSystem = Server.GetExistingSystemManaged<PrefabCollectionSystem>();
         ServerGameSettingsSystem = Server.GetExistingSystemManaged<ServerGameSettingsSystem>();
         ServerScriptMapper = Server.GetExistingSystemManaged<ServerScriptMapper>();
+
+        EventsHandlerSystem.OnUserConnected += AutoToggle.PlayerConnected;
+        EventsHandlerSystem.OnUserDisconnected += AutoToggle.PlayerDisconnected;
 
         _hasInitialized = true;
         Log.LogInfo($"{nameof(InitializeAfterLoaded)} completed");
