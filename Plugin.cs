@@ -55,8 +55,6 @@ public class Plugin : BasePlugin
 
     public override bool Unload()
     {
-        EventsHandlerSystem.OnInitialize -= GameDataOnInitialize;
-
         Config.Clear();
         _harmony?.UnpatchSelf();
         return true;
