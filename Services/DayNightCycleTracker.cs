@@ -1,6 +1,6 @@
 ﻿using ProjectM;
 
-namespace AutoBrazier.Server
+namespace AutoBrazier.Services
 {
     internal class DayNightCycleTracker
     {

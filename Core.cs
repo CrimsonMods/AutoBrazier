@@ -3,8 +3,8 @@ using BepInEx.Logging;
 using ProjectM;
 using ProjectM.Scripting;
 using Unity.Entities;
-using AutoBrazier.Server;
-using Bloody.Core.API.v1;
+using AutoBrazier.Services;
+using AutoBrazier.Hooks;
 
 namespace AutoBrazier;
 
@@ -18,6 +18,7 @@ internal static class Core
     public static ServerScriptMapper ServerScriptMapper { get; internal set; }
     public static double ServerTime => ServerGameManager.ServerTime;
     public static ServerGameManager ServerGameManager => ServerScriptMapper.GetServerGameManager();
+    public static PlayerService PlayerService { get; internal set; }
 
     public static ServerGameSettingsSystem ServerGameSettingsSystem { get; internal set; }
 
@@ -37,9 +38,13 @@ internal static class Core
         PrefabCollectionSystem = Server.GetExistingSystemManaged<PrefabCollectionSystem>();
         ServerGameSettingsSystem = Server.GetExistingSystemManaged<ServerGameSettingsSystem>();
         ServerScriptMapper = Server.GetExistingSystemManaged<ServerScriptMapper>();
+        PlayerService = new();
+        BonfirePatch.Load();
 
+        /*
         EventsHandlerSystem.OnUserConnected += AutoToggle.PlayerConnected;
         EventsHandlerSystem.OnUserDisconnected += AutoToggle.PlayerDisconnected;
+        */
 
         _hasInitialized = true;
         Log.LogInfo($"{nameof(InitializeAfterLoaded)} completed");

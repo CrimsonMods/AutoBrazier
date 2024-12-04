@@ -1,15 +1,13 @@
-﻿using Bloodstone.API;
-using Bloody.Core.Models.v1;
-using Bloody.Core.GameData.v1;
-using ProjectM;
+﻿using ProjectM;
 using ProjectM.Network;
 using Stunlock.Network;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.Entities;
+using AutoBrazier.Utility;
 
-namespace AutoBrazier.Server
+namespace AutoBrazier.Services
 {
     internal class AutoToggle
     {
@@ -47,9 +45,9 @@ namespace AutoBrazier.Server
             var onlineTeams = new List<Team>();
             foreach (var userEntity in userEntities)
             {
-                var user = VWorld.Server.EntityManager.GetComponentData<User>(userEntity);
+                var user = Core.Server.EntityManager.GetComponentData<User>(userEntity);
                 if (!user.IsConnected) continue;
-                var userTeam = VWorld.Server.EntityManager.GetComponentData<Team>(userEntity);
+                var userTeam = Core.Server.EntityManager.GetComponentData<Team>(userEntity);
                 onlineTeams.Add(userTeam);
             }
 
@@ -94,11 +92,11 @@ namespace AutoBrazier.Server
             var serverClient = bootstrapSystem._ApprovedUsersLookup[userIndex];
             var userEntity = serverClient.UserEntity;
 
-            List<UserModel> onlineUsers = GameData.Users.Online.ToList();
+            var onlineUsers = PlayerService.GetUsersOnline().ToList();
 
             foreach (var onlineUser in onlineUsers)
             {
-                if (Core.ServerGameManager.IsAllies(onlineUser.Entity, userEntity))
+                if (Core.ServerGameManager.IsAllies(onlineUser, userEntity))
                 {
                     return;
                 }
@@ -127,7 +125,7 @@ namespace AutoBrazier.Server
                     onlineBraziers.Add(entity);
                 }
                 else
-                { 
+                {
                     offlineBraziers.Add(entity);
                 }
             }

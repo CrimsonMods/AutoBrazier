@@ -2,19 +2,12 @@
 using BepInEx.Configuration;
 using BepInEx.Logging;
 using BepInEx.Unity.IL2CPP;
-using Bloodstone.API;
 using HarmonyLib;
 using System;
-using ProjectM;
-using Bloody.Core;
-using Bloody.Core.API.v1;
-using Unity.Entities;
 
 namespace AutoBrazier;
 
 [BepInPlugin(MyPluginInfo.PLUGIN_GUID, MyPluginInfo.PLUGIN_NAME, MyPluginInfo.PLUGIN_VERSION)]
-[BepInDependency("gg.deca.Bloodstone")]
-[Bloodstone.API.Reloadable]
 public class Plugin : BasePlugin
 {
     public static Harmony _harmony;
@@ -32,20 +25,6 @@ public class Plugin : BasePlugin
     {
         _logger = base.Log;
 
-        Log($"Plugin {MyPluginInfo.PLUGIN_GUID} version {MyPluginInfo.PLUGIN_VERSION} is Loading!");
-
-        InitConfig();
-
-        if (VWorld.IsServer)
-        {
-            Server.Patch.Load();
-        }
-        else
-        {
-            Log("This is a server mod, not client mod.", LogSystem.Core, LogLevel.Warning);
-            return;
-        }
-
         // Harmony patching
         _harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
         _harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());
@@ -58,23 +37,6 @@ public class Plugin : BasePlugin
         Config.Clear();
         _harmony?.UnpatchSelf();
         return true;
-    }
-
-    public void OnGameInitialized()
-    {
-        if (!HasLoaded())
-        {
-            Log($"Attempt to initialize before everything has loaded.");
-            return; 
-        }
-
-        Core.InitializeAfterLoaded();
-    }
-
-    private static bool HasLoaded()
-    {
-        var collectionSystem = Core.Server.GetExistingSystemManaged<PrefabCollectionSystem>();
-        return collectionSystem?.SpawnableNameToPrefabGuidDictionary.Count > 0;
     }
 
     public enum LogSystem

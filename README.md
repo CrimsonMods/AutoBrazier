@@ -2,9 +2,7 @@
 
 ## Install (Manual)
 - Install BepInEx
-- Install Bloodstone
-- Install BloodyCore
-- Extract AutoBrazier.dll into (VRising server folder)/BepInEx/plugins (or BepInEx/BloodstonePlugins)
+- Extract AutoBrazier.dll into __(VRising server folder)/BepInEx/plugins_
 - [ServerLaunchFix](https://v-rising.thunderstore.io/package/Mythic/ServerLaunchFix/) recommended for in-game hosted games
 
 # How to use
@@ -27,12 +25,12 @@ autoToggleEnabled = true
 
 Want to support my V Rising Mod development? 
 
-Join [Vexor World]() where I create exclusive content mods
-
 Donations Accepted with [Ko-Fi](https://ko-fi.com/skytech6)
 
 Or buy/play my games! 
 
 [Train Your Minibot](https://store.steampowered.com/app/713740/Train_Your_Minibot/) 
 
-[Boring Movies](https://store.steampowered.com/app/1792500/Boring_Movies/)
+[Boring Movies](https://store.steampowered.com/app/1792500/Boring_Movies/) **FREE TO PLAYER**
+
+**I do paid Unity modding commissions! Reach out to me on Discord (skytecch6) for all your modding needs.**

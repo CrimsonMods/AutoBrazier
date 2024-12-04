@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using Bloodstone.API;
 using Il2CppInterop.Runtime;
 using ProjectM;
 using Unity.Entities;
-using AutoBrazier.Server;
 using Stunlock.Core;
+using Unity.Collections;
 
 
 namespace AutoBrazier.Utility
@@ -28,7 +27,7 @@ namespace AutoBrazier.Utility
             fixed (byte* p = byteArray)
             {
                 // Set the component data
-                EntityQueries.EntityManager.SetComponentDataRaw(entity, ct.TypeIndex, p, size);
+                Core.EntityManager.SetComponentDataRaw(entity, ct.TypeIndex, p, size);
             }
         }
 
@@ -52,7 +51,7 @@ namespace AutoBrazier.Utility
             var ct = new ComponentType(Il2CppType.Of<T>());
 
             // Get a pointer to the raw component data
-            void* rawPointer = EntityQueries.EntityManager.GetComponentDataRawRO(entity, ct.TypeIndex);
+            void* rawPointer = Core.EntityManager.GetComponentDataRawRO(entity, ct.TypeIndex);
 
             // Marshal the raw data to a T struct
             T componentData = Marshal.PtrToStructure<T>(new IntPtr(rawPointer));
@@ -63,12 +62,12 @@ namespace AutoBrazier.Utility
         public static bool Has<T>(this Entity entity)
         {
             var ct = new ComponentType(Il2CppType.Of<T>());
-            return EntityQueries.EntityManager.HasComponent(entity, ct);
+            return Core.EntityManager.HasComponent(entity, ct);
         }
 
         public static string LookupName(this PrefabGUID prefabGuid)
         {
-            var prefabCollectionSystem = VWorld.Server.GetExistingSystemManaged<PrefabCollectionSystem>();
+            var prefabCollectionSystem = Core.Server.GetExistingSystemManaged<PrefabCollectionSystem>();
             return (prefabCollectionSystem.PrefabGuidToNameDictionary.ContainsKey(prefabGuid)
                 ? prefabCollectionSystem.PrefabGuidToNameDictionary[prefabGuid] + " " + prefabGuid : "GUID Not Found").ToString();
         }
@@ -76,15 +75,56 @@ namespace AutoBrazier.Utility
         public static void Add<T>(this Entity entity)
         {
             var ct = new ComponentType(Il2CppType.Of<T>());
-            EntityQueries.EntityManager.AddComponent(entity, ct);
+            Core.EntityManager.AddComponent(entity, ct);
         }
 
         public static void Remove<T>(this Entity entity)
         {
             var ct = new ComponentType(Il2CppType.Of<T>());
-            EntityQueries.EntityManager.RemoveComponent(entity, ct);
+            Core.EntityManager.RemoveComponent(entity, ct);
         }
 
+        public static NativeArray<Entity> GetEntitiesByComponentType<T1>(bool includeAll = false, bool includeDisabled = false, bool includeSpawn = false, bool includePrefab = false, bool includeDestroyed = false)
+        {
+            EntityQueryOptions options = EntityQueryOptions.Default;
+            if (includeAll) options |= EntityQueryOptions.IncludeAll;
+            if (includeDisabled) options |= EntityQueryOptions.IncludeDisabled;
+            if (includeSpawn) options |= EntityQueryOptions.IncludeSpawnTag;
+            if (includePrefab) options |= EntityQueryOptions.IncludePrefab;
+            if (includeDestroyed) options |= EntityQueryOptions.IncludeDestroyTag;
+
+            EntityQueryDesc queryDesc = new()
+            {
+                All = new ComponentType[] { new(Il2CppType.Of<T1>(), ComponentType.AccessMode.ReadWrite) },
+                Options = options
+            };
+
+            var query = Core.EntityManager.CreateEntityQuery(queryDesc);
+
+            var entities = query.ToEntityArray(Allocator.Temp);
+            return entities;
+        }
+
+        public static NativeArray<Entity> GetEntitiesByComponentTypes<T1, T2>(bool includeAll = false, bool includeDisabled = false, bool includeSpawn = false, bool includePrefab = false, bool includeDestroyed = false)
+        {
+            EntityQueryOptions options = EntityQueryOptions.Default;
+            if (includeAll) options |= EntityQueryOptions.IncludeAll;
+            if (includeDisabled) options |= EntityQueryOptions.IncludeDisabled;
+            if (includeSpawn) options |= EntityQueryOptions.IncludeSpawnTag;
+            if (includePrefab) options |= EntityQueryOptions.IncludePrefab;
+            if (includeDestroyed) options |= EntityQueryOptions.IncludeDestroyTag;
+
+            EntityQueryDesc queryDesc = new()
+            {
+                All = new ComponentType[] { new(Il2CppType.Of<T1>(), ComponentType.AccessMode.ReadWrite), new(Il2CppType.Of<T2>(), ComponentType.AccessMode.ReadWrite) },
+                Options = options
+            };
+
+            var query = Core.EntityManager.CreateEntityQuery(queryDesc);
+
+            var entities = query.ToEntityArray(Allocator.Temp);
+            return entities;
+        }
     }
     //#pragma warning restore CS8500
 }

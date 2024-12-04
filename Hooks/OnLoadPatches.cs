@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using ProjectM;
 
-namespace AutoBrazier.Server
+namespace AutoBrazier.Hooks
 {
     [HarmonyPatch(typeof(SpawnTeamSystem_OnPersistenceLoad), nameof(SpawnTeamSystem_OnPersistenceLoad.OnUpdate))]
     internal class OnLoadPatches
