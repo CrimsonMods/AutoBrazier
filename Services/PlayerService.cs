@@ -10,10 +10,9 @@ namespace AutoBrazier.Services;
 
 internal class PlayerService
 {
-    readonly Dictionary<FixedString64Bytes, PlayerData> namePlayerCache = [];
-    readonly Dictionary<ulong, PlayerData> steamPlayerCache = [];
-    readonly Dictionary<NetworkId, PlayerData> idPlayerCache = [];
-
+    readonly Dictionary<FixedString64Bytes, PlayerData> namePlayerCache = new();
+    readonly Dictionary<ulong, PlayerData> steamPlayerCache = new();
+    readonly Dictionary<NetworkId, PlayerData> idPlayerCache = new();
     internal bool TryFindSteam(ulong steamId, out PlayerData playerData)
     {
         return steamPlayerCache.TryGetValue(steamId, out playerData);

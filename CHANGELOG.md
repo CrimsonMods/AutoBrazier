@@ -1,4 +1,4 @@
-`1.0.0`
+`1.0.1`
 - Removed Dependency Bloodstone
 - Removed Dependency Bloody.Core
 - Refactored cleaner code
