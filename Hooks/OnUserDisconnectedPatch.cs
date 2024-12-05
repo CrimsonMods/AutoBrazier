@@ -23,8 +23,6 @@ public static class OnUserDisconnectedPatch
 			{
 				var playerName = userData.CharacterName.ToString();
 				Core.PlayerService.UpdatePlayerCache(serverClient.UserEntity, playerName, playerName, true);
-
-				Core.Log.LogInfo($"Player {playerName} disconnected");
 			}
 
             AutoToggle.PlayerDisconnected(__instance, netConnectionId, connectionStatusReason, extraData);

@@ -1,7 +1,7 @@
 ﻿using AutoBrazier.Services;
-using HarmonyLib;
-using ProjectM;
 using System;
+using System.Collections;
+using UnityEngine;
 
 namespace AutoBrazier.Hooks;
 
@@ -17,53 +17,55 @@ internal class BonfirePatch
     {
         _dayNightCycleTracker = new DayNightCycleTracker();
         _dayNightCycleTracker.OnTimeOfDayChanged += AutoToggle.OnTimeOfDayChanged;
+
+        if (!Plugin.AutoToggleEnabled.Value) return;
+        Core.StartCoroutine(Check());
     }
-    
-    [HarmonyPatch(typeof(BonfireSystemUpdateCloud), nameof(BonfireSystemUpdateCloud.OnUpdate))]
-    private static void Postfix(BonfireSystemUpdateCloud __instance)
+
+    private static IEnumerator Check()
     {
-        if(_dayNightCycleTracker == null) return;
-
-        if (!Plugin.AutoToggleEnabled.Value || !Core.HasInitialized)
+        while (true)
         {
-            Plugin.Log($"Returning because either Plugin.AutoToggleEnabled is False ({Plugin.AutoToggleEnabled.Value}) or Core.HasInitialized is False {Core.HasInitialized})");
-            return;
-        }
+            yield return new WaitForSeconds(10f);
 
-        if (Core.ServerGameManager.HasDayNightCycle)
-        {
-            try
+            if (!Core.HasInitialized) yield return null;
+
+            if (_dayNightCycleTracker == null) yield return null;
+
+            if (Core.ServerGameManager.HasDayNightCycle)
             {
-                var dayNightCycle = Core.ServerGameManager.DayNightCycle;
-
-                if (!_isDnInitialized)
+                try
                 {
-                    _currentDay = dayNightCycle.GameDateTimeNow.Day;
-                    _isDnInitialized = true;
-                    _dayNightCycleTracker.Update(dayNightCycle);
-                }
-                else
-                {
-                    _currentDay = dayNightCycle.GameDateTimeNow.Day;
-                    _dayNightCycleTracker.Update(dayNightCycle);
-                }
+                    var dayNightCycle = Core.ServerGameManager.DayNightCycle;
+                    if (!_isDnInitialized)
+                    {
+                        _currentDay = dayNightCycle.GameDateTimeNow.Day;
+                        _isDnInitialized = true;
+                        _dayNightCycleTracker.Update(dayNightCycle);
+                    }
+                    else
+                    {
+                        _currentDay = dayNightCycle.GameDateTimeNow.Day;
+                        _dayNightCycleTracker.Update(dayNightCycle);
+                    }
 
+                }
+                catch (Exception e)
+                {
+                    if (e.Message.StartsWith(InitialErrorMessage))
+                    {
+                        Plugin.Log($"DNC singleton not yet ready. This error should only appear on the initial creation/startup of the server.");
+                    }
+                    else
+                    {
+                        Plugin.Log($"DayNightCycle: {e.Message}");
+                    }
+                }
             }
-            catch (Exception e)
+            else
             {
-                if (e.Message.StartsWith(InitialErrorMessage))
-                {
-                    Plugin.Log($"DNC singleton not yet ready. This error should only appear on the initial creation/startup of the server.");
-                }
-                else
-                {
-                    Plugin.Log($"DayNightCycle: {e.Message}");
-                }
+                Plugin.Log($"Core.ServerGameManager.HasDayNightCycle = False", Plugin.LogSystem.Core, BepInEx.Logging.LogLevel.Warning);
             }
-        }
-        else
-        {
-            Plugin.Log($"Core.ServerGameManager.HasDayNightCycle = False", Plugin.LogSystem.Core, BepInEx.Logging.LogLevel.Warning);
         }
     }
 }

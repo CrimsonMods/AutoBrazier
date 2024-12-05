@@ -5,6 +5,10 @@ using ProjectM.Scripting;
 using Unity.Entities;
 using AutoBrazier.Services;
 using AutoBrazier.Hooks;
+using UnityEngine;
+using System.Collections;
+using ProjectM.Physics;
+using BepInEx.Unity.IL2CPP.Utils.Collections;
 
 namespace AutoBrazier;
 
@@ -24,7 +28,7 @@ internal static class Core
 
     public static ManualLogSource Log { get; } = Plugin._logger;
 
-    public const int MAX_REPLY_LENGTH = 509;
+    static MonoBehaviour MonoBehaviour;
 
     public static void LogException(System.Exception e, [CallerMemberName] string caller = null)
     {
@@ -40,11 +44,6 @@ internal static class Core
         ServerScriptMapper = Server.GetExistingSystemManaged<ServerScriptMapper>();
         PlayerService = new();
         BonfirePatch.Load();
-
-        /*
-        EventsHandlerSystem.OnUserConnected += AutoToggle.PlayerConnected;
-        EventsHandlerSystem.OnUserDisconnected += AutoToggle.PlayerDisconnected;
-        */
 
         _hasInitialized = true;
         Log.LogInfo($"{nameof(InitializeAfterLoaded)} completed");
@@ -64,5 +63,15 @@ internal static class Core
         }
 
         return null;
+    }
+
+    public static void StartCoroutine(IEnumerator routine)
+    {
+        if (MonoBehaviour == null)
+        {
+            MonoBehaviour = new GameObject("AutoBrazier").AddComponent<IgnorePhysicsDebugSystem>();
+            Object.DontDestroyOnLoad(MonoBehaviour.gameObject);
+        }
+        MonoBehaviour.StartCoroutine(routine.WrapToIl2Cpp());
     }
 }

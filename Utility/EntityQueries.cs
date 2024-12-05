@@ -10,7 +10,8 @@ namespace AutoBrazier.Utility
     {
         private static readonly ComponentType[] BrazierComponents =
         {
-            ComponentType.ReadOnly(Il2CppType.Of<Bonfire>())
+            ComponentType.ReadOnly(Il2CppType.Of<Bonfire>()),
+            ComponentType.ReadOnly(Il2CppType.Of<BurnContainer>())
         };
 
         public static NativeArray<Entity> GetUserEntities()
