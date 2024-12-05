@@ -25,6 +25,8 @@ public class Plugin : BasePlugin
     {
         _logger = base.Log;
 
+        InitConfig();
+
         // Harmony patching
         _harmony = new Harmony(MyPluginInfo.PLUGIN_GUID);
         _harmony.PatchAll(System.Reflection.Assembly.GetExecutingAssembly());

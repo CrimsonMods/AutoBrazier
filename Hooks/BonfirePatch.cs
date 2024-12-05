@@ -5,7 +5,6 @@ using System;
 
 namespace AutoBrazier.Hooks;
 
-[HarmonyPatch]
 internal class BonfirePatch
 {
     private static DayNightCycleTracker _dayNightCycleTracker;
@@ -19,11 +18,11 @@ internal class BonfirePatch
         _dayNightCycleTracker = new DayNightCycleTracker();
         _dayNightCycleTracker.OnTimeOfDayChanged += AutoToggle.OnTimeOfDayChanged;
     }
-
+    
     [HarmonyPatch(typeof(BonfireSystemUpdateCloud), nameof(BonfireSystemUpdateCloud.OnUpdate))]
-    [HarmonyPostfix]
-    private static void OnUpdate(BonfireSystemUpdateCloud __instance)
+    private static void Postfix(BonfireSystemUpdateCloud __instance)
     {
+        if(_dayNightCycleTracker == null) return;
 
         if (!Plugin.AutoToggleEnabled.Value || !Core.HasInitialized)
         {
